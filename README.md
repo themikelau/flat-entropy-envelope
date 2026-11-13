@@ -137,15 +137,6 @@ Mass  Pressure  Temperature  Radius  Density  Eint
 
 Inside `rcore` it contains the original MESA ρ, P and r. Temperature and specific internal energy are recomputed everywhere from ρ and P with the chosen `ieos`. Composition is not written, so give Phantom the same X, Z and μ that the code printed when it started.
 
-## Plotting
-
-`compare_profiles.py` plots density, pressure, entropy, specific internal energy and temperature against radius for the new profile and the MESA profile, one figure each. Open it in VS Code and use **Run Cell** / **Run All Cells**. Set the file names, and optionally `save_dir` to save PNGs, in the settings cell at the top.
-
-Entropy is computed the same way for both profiles, per unit mass:
-
-$$s = \frac{R_g}{\mu}\ln\!\left(\frac{T^{3/2}}{\rho}\right) + \frac{4 a T^3}{3\rho},$$
-
-so the additive constant is arbitrary but identical for both curves. Inside the MESA core this formula ignores degeneracy and is not physical there.
 
 ## Limitations
 
@@ -153,5 +144,3 @@ so the additive constant is arbitrary but identical for both curves. Inside the 
 - **Single μ.** The envelope uses one mean molecular weight. Where hydrogen recombines near the surface, the real μ is higher.
 - **Inner boundary.** `rho(0)` and `pres(0)` come from MESA and are not on the adiabat `S_c`, so there is a small density discontinuity at the core boundary.
 - **The core radius snaps to the MESA grid.** The boundary is the MESA point nearest `rcore`. Avoid placing `rcore` inside a composition discontinuity (in `profile40.data`, the edge of the hydrogen-burning shell is at 18.37 R☉).
-- **Point-mass gravity.** The enclosed mass acts as an unsoftened point mass. If the Phantom simulation represents the core with a softened sink particle, the innermost envelope will not be exactly in equilibrium.
-- **`do_ledoux = .true.` is experimental.** In this mode the density gradient is prescribed through `Gamma1_dlnrho_dlnp` (a fit hard-coded for a specific model) instead of constant entropy, and the entropy shooting does not apply.
